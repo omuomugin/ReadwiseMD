@@ -6,3 +6,6 @@ script/.env
 
 ## MacOS
 .DS_Store
+
+CLAUDE.md
+.claude/**
