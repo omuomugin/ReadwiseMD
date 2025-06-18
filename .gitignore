@@ -1,0 +1,8 @@
+script/bin/**
+script/.env
+
+## IntelliJ IDEA
+.idea/**
+
+## MacOS
+.DS_Store
