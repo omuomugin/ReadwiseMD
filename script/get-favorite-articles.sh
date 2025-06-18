@@ -83,6 +83,6 @@ while [ "$HAS_MORE" = true ]; do
   rm -f "$RESPONSE" "$HEADER"
 done
 
-echo "$ALL_ITEMS" | jq 'sort_by(.last_moved_at) | reverse' > bin/favorite_articles.json
+echo "$ALL_ITEMS" | jq 'sort_by(.last_moved_at) | reverse' > ${FAVORITE_ITEMS_JSON_PATH}
 
-echo "[INFO] Done: Saved to bin/favorite_articles.json ."
+echo "[INFO] Done: Saved to ${FAVORITE_ITEMS_JSON_PATH} ."
