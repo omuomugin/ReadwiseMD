@@ -39,10 +39,3 @@ for ITEM_ID in $UNRESOLVED_IDS; do
   echo "[INFO] file created: $FILENAME"
 done
 
-# update the resolved_item_ids in the JSON file
-ITEM_IDS=$(jq '[.[] | .id]' "${ARTICLES_FILE}")
-UPDATED_RESOLVED_JSON=$(jq --argjson ids "$ITEM_IDS" '.resolved_item_ids = $ids' "$RESOLVED_ITEM_JSON")
-echo "$UPDATED_RESOLVED_JSON" > "$RESOLVED_ITEM_JSON"
-
-echo "[INFO] updated ${RESOLVED_ITEM_JSON}"
-
