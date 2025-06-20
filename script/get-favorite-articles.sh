@@ -57,7 +57,8 @@ while [ "$HAS_MORE" = true ]; do
   if [ -z "$TOTAL_COUNT" ]; then
     TOTAL_COUNT=$(echo "$RESPONSE_BODY_CLEAN" | jq -r '.count')
     if [ -z "$TOTAL_COUNT" ] || [ "$TOTAL_COUNT" = "null" ]; then
-      TOTAL_COUNT="?"
+      echo "[INFO] TOTAL_COUNT not found in the response. TOTAL_COUNT=${TOTAL_COUNT}"
+      exit 1
     fi
   fi
 
@@ -74,7 +75,7 @@ while [ "$HAS_MORE" = true ]; do
   echo "[INFO] Processed $FETCHED_COUNT / $TOTAL_COUNT articles."
 
   # Pagination
-  if [ "$ITEM_COUNT" -lt "$ITEMS_PER_PAGE" ]; then
+  if [ "$FETCHED_COUNT" -ge "$TOTAL_COUNT" ]; then
     HAS_MORE=false
   else
     PAGE_CURSOR=$(echo "$RESPONSE_BODY_CLEAN" | jq -r '.nextPageCursor // empty')
