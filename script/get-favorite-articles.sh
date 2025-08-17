@@ -84,6 +84,20 @@ while [ "$HAS_MORE" = true ]; do
   rm -f "$RESPONSE" "$HEADER"
 done
 
-echo "$ALL_ITEMS" | jq 'sort_by(.last_moved_at) | reverse' > ${FAVORITE_ITEMS_JSON_PATH}
+# Normalize SpeakerDeck URLs by removing query parameters and deduplicate
+ALL_ITEMS_DEDUPLICATED=$(echo "$ALL_ITEMS" | jq '
+  map(
+    if .source_url and (.source_url | test("speakerdeck\\.com")) then
+      .source_url = (.source_url | split("?")[0])
+    else
+      .
+    end
+  ) |
+  group_by(.source_url) |
+  map(.[0]) |
+  sort_by(.last_moved_at) | reverse
+')
+
+echo "$ALL_ITEMS_DEDUPLICATED" > ${FAVORITE_ITEMS_JSON_PATH}
 
 echo "[INFO] Done: Saved to ${FAVORITE_ITEMS_JSON_PATH} ."
